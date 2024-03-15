@@ -36,14 +36,20 @@ module.exports = (env, argv) => {
                 },
                 {
                     test: /\.(svg|png|jpg|gif|webp)$/,
-                    use: {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]',
-                            outputPath: 'imgs',
-                            esModule: false,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: '[name][contenthash].[ext]',
+                                outputPath: 'imgs',
+                                esModule: false,
+                            },
                         },
-                    },
+                        {
+                            loader: 'webpack-image-resize-loader',
+                            options: {},
+                        },
+                    ],
                 },
                 {
                     test: /\.(aac|mp3)$/,
