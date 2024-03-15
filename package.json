@@ -1,0 +1,11 @@
+{
+  "name": "extension-env",
+  "version": "1.0.0",
+  "description": "Extension Environment Development",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zacharie Boisnard",
+  "license": "ISC"
+}
