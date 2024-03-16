@@ -36,6 +36,7 @@ module.exports = (env, argv) => {
             }),
             new HtmlWebpackPlugin({
                 template: path.resolve(__dirname, 'src', 'index.html'),
+                scriptLoading: 'blocking',
             }),
         ],
         module: {

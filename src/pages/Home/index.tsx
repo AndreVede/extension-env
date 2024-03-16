@@ -1,9 +1,14 @@
 import React from 'react';
+import styled from 'styled-components';
+
+const Title = styled.h1`
+    color: green;
+`;
 
 const Home: React.FC = () => {
     return (
         <>
-            <h1>Test DEMO</h1>
+            <Title>Test DEMO</Title>
             <p>This is a DEMO</p>
         </>
     );
