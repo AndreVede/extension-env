@@ -2,16 +2,31 @@ const path = require('path');
 const WebpackExtensionManifestPlugin = require('webpack-extension-manifest-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const iconSizes = [16, 32, 48, 128];
+
+const extendedManifest = {
+    icons: {},
+};
+iconSizes.forEach((size) => {
+    extendedManifest.icons[size] = `imgs/icon-${size}.png`;
+});
+
+// Icon file
+const icon = path.resolve(__dirname, 'src', 'assets', 'icon.png');
+
+const importIcon = iconSizes.map((size) => `${icon}?width=${size}`);
+
 module.exports = (env, argv) => {
     const mode = argv.mode;
     const conf = {
-        entry: { index: path.resolve(__dirname, 'src', 'index.tsx') },
+        entry: [path.resolve(__dirname, 'src', 'index.tsx')].concat(importIcon),
         devtool: isProd(mode) ? undefined : 'inline-source-map',
         plugins: [
             new WebpackExtensionManifestPlugin({
                 minify: true,
                 config: {
                     base: path.resolve(__dirname, 'baseManifest.js'),
+                    extend: extendedManifest,
                 },
                 pkgJsonProps: ['version'],
             }),
@@ -40,14 +55,27 @@ module.exports = (env, argv) => {
                         {
                             loader: 'file-loader',
                             options: {
-                                name: '[name][contenthash].[ext]',
                                 outputPath: 'imgs',
                                 esModule: false,
                             },
                         },
                         {
                             loader: 'webpack-image-resize-loader',
-                            options: {},
+                            options: {
+                                fileLoaderOptionsGenerator: (options, existingOptions) => {
+                                    let name;
+                                    if (options.width) {
+                                        name = `[name]-${options.width}.${options.format}`;
+                                    } else {
+                                        name = `[name].${options.format}`;
+                                    }
+
+                                    return {
+                                        ...existingOptions,
+                                        name,
+                                    };
+                                },
+                            },
                         },
                     ],
                 },
