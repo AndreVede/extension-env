@@ -6,9 +6,13 @@ const iconSizes = [16, 32, 48, 128];
 
 const extendedManifest = {
     icons: {},
+    action: {
+        default_icon: {},
+    },
 };
 iconSizes.forEach((size) => {
     extendedManifest.icons[size] = `imgs/icon-${size}.png`;
+    extendedManifest.action.default_icon[size] = `imgs/icon-${size}.png`;
 });
 
 // Icon file
