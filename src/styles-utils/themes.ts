@@ -15,18 +15,18 @@ export type ColorModel = {
 
 export class Theme {
     theme: ColorModel;
-    fonts!: ColorModel;
+    fonts: ColorModel;
 
     constructor(theme: ColorModel) {
         this.theme = theme;
+        this.fonts = { ...theme };
         this.setFontColors();
     }
 
     private setFontColors() {
-        Object.entries(this.theme).forEach(([name, color]: [string, Color]) => {
-            let currentFontColor = color;
-            currentFontColor.hwb.b *= 35;
-            this.fonts[name as keyof ColorModel] = currentFontColor;
+        Object.entries(this.fonts).forEach(([name, color]: [string, Color]) => {
+            color.hwb.b; // *= 35;
+            this.fonts[name as keyof ColorModel] = color;
         });
     }
 }
