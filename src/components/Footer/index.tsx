@@ -1,9 +1,11 @@
+import { applyColor } from '@src/styles-utils/functions';
+import { ColorEnum } from '@src/styles-utils/themes';
 import React from 'react';
 import styled from 'styled-components';
 
 const FooterTag = styled.footer`
     height: 20px;
-    background: ${(p) => p.theme.theme.secondary.toString()};
+    ${applyColor(ColorEnum.secondary)}
 `;
 
 const Footer: React.FC = () => {

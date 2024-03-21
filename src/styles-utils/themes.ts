@@ -1,6 +1,6 @@
 import Color from 'colorjs.io';
 
-enum ColorEnum {
+export enum ColorEnum {
     primary = 'primary',
     secondary = 'secondary',
     tertiary = 'tertiary',
@@ -15,18 +15,26 @@ export type ColorModel = {
 
 export class Theme {
     theme: ColorModel;
-    fonts: ColorModel;
+    fonts!: ColorModel;
 
     constructor(theme: ColorModel) {
         this.theme = theme;
-        this.fonts = { ...theme };
         this.setFontColors();
     }
 
     private setFontColors() {
+        this.fonts = { ...this.theme };
         Object.entries(this.fonts).forEach(([name, color]: [string, Color]) => {
-            color.hwb.b; // *= 35;
-            this.fonts[name as keyof ColorModel] = color;
+            const currentColor: Color = new Color(color.toString());
+
+            const gapColor: number = 70;
+
+            if (currentColor.hwb.b > 40) {
+                currentColor.hwb.b -= gapColor;
+            } else {
+                currentColor.hwb.b += gapColor;
+            }
+            this.fonts[name as keyof ColorModel] = currentColor;
         });
     }
 }

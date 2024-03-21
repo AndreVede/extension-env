@@ -113,7 +113,7 @@ module.exports = (env, argv) => {
             alias: { '@src': path.resolve(__dirname, 'src') },
         },
         output: {
-            filename: 'bundle.js',
+            filename: 'scripts/[name].js',
             path: path.resolve(__dirname, 'build'),
             clean: true,
         },

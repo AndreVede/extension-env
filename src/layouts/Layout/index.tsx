@@ -9,6 +9,7 @@ import Footer from '@src/components/Footer';
 
 const Main = styled.main`
     ${flexStretch('column')}
+    padding: 0 5px;
 `;
 
 const Layout: React.FC = () => {

@@ -1,9 +1,11 @@
 import { css } from 'styled-components';
-import { ColorModel } from './themes';
+import { ColorEnum } from './themes';
 
-export function applyColor(themeName: keyof ColorModel) {
-    // TODO Implement
-    return css``;
+export function applyColor(color: ColorEnum) {
+    return css`
+        color: ${(p) => p.theme.fonts[color].toString()};
+        background: ${(p) => p.theme.theme[color].toString()};
+    `;
 }
 
 export function flexCenter(flexDirection = 'column', justifyContent = 'center', alignContent = 'center') {
