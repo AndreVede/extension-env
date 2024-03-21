@@ -5,4 +5,10 @@ module.exports = {
     action: {
         default_popup: 'index.html',
     },
+    content_scripts: [
+        {
+            js: ['scripts/contentScripts.js'],
+            matches: ['https://*'],
+        },
+    ],
 };

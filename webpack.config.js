@@ -1,6 +1,6 @@
 const path = require('path');
 const WebpackExtensionManifestPlugin = require('webpack-extension-manifest-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlBundlerPlugin = require('html-bundler-webpack-plugin');
 
 const iconSizes = [16, 32, 48, 128];
 
@@ -18,21 +18,17 @@ iconSizes.forEach((size) => {
 // Icon file
 const icon = path.resolve(__dirname, 'src', 'assets', 'icon.png');
 
-const importIcon = iconSizes
-    .map((size) => ({
-        key: `icon_${size}`,
-        value: `${icon}?width=${size}`,
-    }))
-    .reduce((prev, curr) => ((prev[curr.key] = curr.value), prev), {});
+const importIcon = iconSizes.map((size) => `${icon}?width=${size}`);
+// (size) => ({
+//     key: `icon_${size}`,
+//     value: `${icon}?width=${size}`,
+// })
+//.reduce((prev, curr) => ((prev[curr.key] = curr.value), prev), {});
 
 module.exports = (env, argv) => {
     const mode = argv.mode;
     const conf = {
-        entry: {
-            main: path.resolve(__dirname, 'src', 'index.tsx'),
-            contentScripts: path.resolve(__dirname, 'src', 'content_scripts', 'contentScripts'),
-            ...importIcon,
-        },
+        entry: { contentScripts: path.resolve(__dirname, 'src', 'content_scripts', 'contentScripts') },
         devtool: isProd(mode) ? undefined : 'inline-source-map',
         plugins: [
             new WebpackExtensionManifestPlugin({
@@ -43,9 +39,9 @@ module.exports = (env, argv) => {
                 },
                 pkgJsonProps: ['version'],
             }),
-            new HtmlWebpackPlugin({
-                template: path.resolve(__dirname, 'src', 'index.html'),
-                scriptLoading: 'blocking',
+            new HtmlBundlerPlugin({
+                entry: { index: path.resolve(__dirname, 'src', 'index.html') },
+                minify: true,
             }),
         ],
         module: {
@@ -122,7 +118,7 @@ module.exports = (env, argv) => {
             alias: { '@src': path.resolve(__dirname, 'src') },
         },
         output: {
-            filename: 'scripts/[name].js',
+            filename: path.join('scripts', '[name].js'),
             path: path.resolve(__dirname, 'build'),
             clean: true,
         },
