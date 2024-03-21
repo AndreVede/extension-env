@@ -18,12 +18,21 @@ iconSizes.forEach((size) => {
 // Icon file
 const icon = path.resolve(__dirname, 'src', 'assets', 'icon.png');
 
-const importIcon = iconSizes.map((size) => `${icon}?width=${size}`);
+const importIcon = iconSizes
+    .map((size) => ({
+        key: `icon_${size}`,
+        value: `${icon}?width=${size}`,
+    }))
+    .reduce((prev, curr) => ((prev[curr.key] = curr.value), prev), {});
 
 module.exports = (env, argv) => {
     const mode = argv.mode;
     const conf = {
-        entry: [path.resolve(__dirname, 'src', 'index.tsx')].concat(importIcon),
+        entry: {
+            main: path.resolve(__dirname, 'src', 'index.tsx'),
+            contentScripts: path.resolve(__dirname, 'src', 'content_scripts', 'contentScripts'),
+            ...importIcon,
+        },
         devtool: isProd(mode) ? undefined : 'inline-source-map',
         plugins: [
             new WebpackExtensionManifestPlugin({
