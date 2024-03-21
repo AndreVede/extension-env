@@ -4,6 +4,11 @@ const HtmlBundlerPlugin = require('html-bundler-webpack-plugin');
 
 const iconSizes = [16, 32, 48, 128];
 
+// Icon file
+const icon = path.resolve(__dirname, 'src', 'assets', 'icon.png');
+
+const importIcon = iconSizes.map((size) => `${icon}?width=${size}`);
+
 const extendedManifest = {
     icons: {},
     action: {
@@ -14,16 +19,6 @@ iconSizes.forEach((size) => {
     extendedManifest.icons[size] = `imgs/icon-${size}.png`;
     extendedManifest.action.default_icon[size] = `imgs/icon-${size}.png`;
 });
-
-// Icon file
-const icon = path.resolve(__dirname, 'src', 'assets', 'icon.png');
-
-const importIcon = iconSizes.map((size) => `${icon}?width=${size}`);
-// (size) => ({
-//     key: `icon_${size}`,
-//     value: `${icon}?width=${size}`,
-// })
-//.reduce((prev, curr) => ((prev[curr.key] = curr.value), prev), {});
 
 module.exports = (env, argv) => {
     const mode = argv.mode;
